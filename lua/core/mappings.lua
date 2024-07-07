@@ -6,8 +6,8 @@ vim.keymap.set("n", "<C-j>", "<cmd>wincmd j<CR>")
 vim.keymap.set("n", "<C-k>", "<cmd>wincmd k<CR>")
 vim.keymap.set("n", "<C-l>", "<cmd>wincmd l<CR>")
 
-vim.keymap.set("n", "j" , "v:count ? 'j' : 'gj'", { expr = true })
-vim.keymap.set("n", "k" , "v:count ? 'k' : 'gk'", { expr = true })
+vim.keymap.set({"n", "v", "i"}, "j" , "v:count ? 'j' : 'gj'", { expr = true })
+vim.keymap.set({"n", "v", "i"}, "k" , "v:count ? 'k' : 'gk'", { expr = true })
 
 -- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 -- vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
