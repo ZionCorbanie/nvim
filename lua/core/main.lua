@@ -21,3 +21,17 @@ vim.opt.incsearch = true
 
 -- set clipboard
 vim.opt.clipboard ="unnamedplus"
+
+vim.filetype.add({
+  extension = {
+      templ = "templ",
+  },
+})
+
+-- vim.cmd([[
+-- augroup TransparentBackground
+-- autocmd!
+-- autocmd ColorScheme * highlight Normal ctermbg=none guibg=none
+-- autocmd ColorScheme * highlight NonText ctermbg=none guibg=none
+-- augroup END
+-- ]])

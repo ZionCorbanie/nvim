@@ -101,9 +101,13 @@ local mappings = {
   },
   -- ["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
   ["c"] = { "<cmd>Bdelete!<CR>", "Close Buffer" },
+  d = {
+      c = { "<cmd>Copilot disable<cr>", "Disable Copilot" },
+      e = { "<cmd>Copilot enable<cr>", "Enable Copilot" },
+  },
   ["e"] = { "Harpoon search" },
   ["w"] = { "<C-w>", "Window" },
-  f = { 
+  f = {
       name = "Telescope",
       f = {"Find files"},
       g = {"Live grep"},
@@ -187,17 +191,17 @@ local mappings = {
     k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
     C = { "<cmd>Telescope commands<cr>", "Commands" },
   },
--- Terminal
-  --[[ t = {
-    name = "Terminal",
-    n = { "<cmd>lua _NODE_TOGGLE()<cr>", "Node" },
-    u = { "<cmd>lua _NCDU_TOGGLE()<cr>", "NCDU" },
-    t = { "<cmd>lua _HTOP_TOGGLE()<cr>", "Htop" },
-    p = { "<cmd>lua _PYTHON_TOGGLE()<cr>", "Python" },
-    f = { "<cmd>ToggleTerm direction=float<cr>", "Float" },
-    h = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "Horizontal" },
-    v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" },
-  }, ]]
+  x = {
+    name = "Trouble",
+    x={"<cmd>Trouble diagnostics toggle<cr>","toggle trouble"},
+    w={"<cmd>Trouble workspace_diagnostics toggle<cr>","workspace_diagnostics"},
+    d={"<cmd>Trouble document_diagnostics toggle<cr>","document_diagnostics"},
+    l={"<cmd>Trouble loclist toggle<cr>","loclist"},
+    q={"<cmd>Trouble quickfix toggle<cr>","quickfix"},
+  },
+  g = {
+    R = {"<cmd>Trouble lsp_references toggle<cr>",""}
+  },
 }
 
 which_key.setup(setup)
