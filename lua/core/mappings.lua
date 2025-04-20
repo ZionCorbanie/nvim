@@ -95,113 +95,39 @@ local opts = {
   nowait = true, -- use `nowait` when creating keymaps
 }
 local mappings = {
-  ["a"] = { "Add to harpoon" },
-  ["b"] = {
-    "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
-    "Buffers",
-  },
-  -- ["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
-  c = {
-      d = { "<cmd>Copilot disable<cr>", "Disable Copilot" },
-      e = { "<cmd>Copilot enable<cr>", "Enable Copilot" },
-  },
-  ["e"] = { "Harpoon search" },
-  ["w"] = { "<C-w>", "Window" },
-  f = {
-      name = "Telescope",
-      f = {"Find files"},
-      g = {"Live grep"},
-      b = {"buffers"},
-      h = {"Help tags"},
-  },
-  -- Packer
-  p = {
-    name = "Packer",
-    c = { "<cmd>PackerCompile<cr>", "Compile" },
-    i = { "<cmd>PackerInstall<cr>", "Install" },
-    s = { "<cmd>PackerSync<cr>", "Sync" },
-    S = { "<cmd>PackerStatus<cr>", "Status" },
-    u = { "<cmd>PackerUpdate<cr>", "Update" },
-  },
-  -- Git
-
-  --[[ g = {
-    name = "Git",
-    g = { "<cmd>lua _LAZYGIT_TOGGLE()<CR>", "Lazygit" },
-    j = { "<cmd>lua require 'gitsigns'.next_hunk()<cr>", "Next Hunk" },
-    k = { "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", "Prev Hunk" },
-    l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", "Blame" },
-    p = { "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", "Preview Hunk" },
-    r = { "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", "Reset Hunk" },
-    R = { "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", "Reset Buffer" },
-    s = { "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", "Stage Hunk" },
-    u = {
-      "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
-      "Undo Stage Hunk",
-    },
-    o = { "<cmd>Telescope git_status<cr>", "Open changed file" },
-    b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
-    c = { "<cmd>Telescope git_commits<cr>", "Checkout commit" },
-    d = {
-      "<cmd>Gitsigns diffthis HEAD<cr>",
-      "Diff",
-    },
-  }, ]]
--- Language Server Protocol (LSP)
-  --[[ l = {
-    name = "LSP",
-    a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
-    d = {
-      "<cmd>Telescope diagnostics bufnr=0<cr>",
-      "Document Diagnostics",
-    },
-    w = {
-      "<cmd>Telescope diagnostics<cr>",
-      "Workspace Diagnostics",
-    },
-    f = { "<cmd>lua vim.lsp.buf.format{async=true}<cr>", "Format" },
-    i = { "<cmd>LspInfo<cr>", "Info" },
-    I = { "<cmd>LspInstallInfo<cr>", "Installer Info" },
-    j = {
-      "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>",
-      "Next Diagnostic",
-    },
-    k = {
-      "<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>",
-      "Prev Diagnostic",
-    },
-    l = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
-    q = { "<cmd>lua vim.diagnostic.setloclist()<cr>", "Quickfix" },
-    r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
-    s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
-    S = {
-      "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
-      "Workspace Symbols",
-    },
-  }, ]]
-  --Telescope
-  s = {
-    name = "Search",
-    b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
-    c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
-    h = { "<cmd>Telescope help_tags<cr>", "Find Help" },
-    M = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
-    r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
-    R = { "<cmd>Telescope registers<cr>", "Registers" },
-    k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
-    C = { "<cmd>Telescope commands<cr>", "Commands" },
-  },
-  x = {
-    name = "Trouble",
-    x={"<cmd>Trouble diagnostics toggle<cr>","toggle trouble"},
-    w={"<cmd>Trouble workspace_diagnostics toggle<cr>","workspace_diagnostics"},
-    d={"<cmd>Trouble document_diagnostics toggle<cr>","document_diagnostics"},
-    l={"<cmd>Trouble loclist toggle<cr>","loclist"},
-    q={"<cmd>Trouble quickfix toggle<cr>","quickfix"},
-  },
-  g = {
-    R = {"<cmd>Trouble lsp_references toggle<cr>",""}
-  },
+    { "<leader>a", desc = "Add to harpoon", nowait = true, remap = false },
+    { "<leader>b", "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>", desc = "Buffers", nowait = true, remap = false },
+    { "<leader>cd", "<cmd>Copilot disable<cr>", desc = "Disable Copilot", nowait = true, remap = false },
+    { "<leader>ce", "<cmd>Copilot enable<cr>", desc = "Enable Copilot", nowait = true, remap = false },
+    { "<leader>e", desc = "Harpoon search", nowait = true, remap = false },
+    { "<leader>f", group = "Telescope", nowait = true, remap = false },
+    { "<leader>fb", desc = "buffers", nowait = true, remap = false },
+    { "<leader>ff", desc = "Find files", nowait = true, remap = false },
+    { "<leader>fg", desc = "Live grep", nowait = true, remap = false },
+    { "<leader>fh", desc = "Help tags", nowait = true, remap = false },
+    { "<leader>gR", "<cmd>Trouble lsp_references toggle<cr>", desc = "", nowait = true, remap = false },
+    { "<leader>p", group = "Packer", nowait = true, remap = false },
+    { "<leader>pS", "<cmd>PackerStatus<cr>", desc = "Status", nowait = true, remap = false },
+    { "<leader>pc", "<cmd>PackerCompile<cr>", desc = "Compile", nowait = true, remap = false },
+    { "<leader>pi", "<cmd>PackerInstall<cr>", desc = "Install", nowait = true, remap = false },
+    { "<leader>ps", "<cmd>PackerSync<cr>", desc = "Sync", nowait = true, remap = false },
+    { "<leader>pu", "<cmd>PackerUpdate<cr>", desc = "Update", nowait = true, remap = false },
+    { "<leader>s", group = "Search", nowait = true, remap = false },
+    { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands", nowait = true, remap = false },
+    { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages", nowait = true, remap = false },
+    { "<leader>sR", "<cmd>Telescope registers<cr>", desc = "Registers", nowait = true, remap = false },
+    { "<leader>sb", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch", nowait = true, remap = false },
+    { "<leader>sc", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme", nowait = true, remap = false },
+    { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Find Help", nowait = true, remap = false },
+    { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps", nowait = true, remap = false },
+    { "<leader>sr", "<cmd>Telescope oldfiles<cr>", desc = "Open Recent File", nowait = true, remap = false },
+    { "<leader>w", "<C-w>", desc = "Window", nowait = true, remap = false },
+    { "<leader>x", group = "Trouble", nowait = true, remap = false },
+    { "<leader>xd", "<cmd>Trouble document_diagnostics toggle<cr>", desc = "document_diagnostics", nowait = true, remap = false },
+    { "<leader>xl", "<cmd>Trouble loclist toggle<cr>", desc = "loclist", nowait = true, remap = false },
+    { "<leader>xq", "<cmd>Trouble quickfix toggle<cr>", desc = "quickfix", nowait = true, remap = false },
+    { "<leader>xw", "<cmd>Trouble workspace_diagnostics toggle<cr>", desc = "workspace_diagnostics", nowait = true, remap = false },
+    { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "toggle trouble", nowait = true, remap = false },
 }
 
 which_key.setup(setup)
