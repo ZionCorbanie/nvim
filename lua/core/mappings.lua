@@ -1,5 +1,6 @@
 vim.g.mapleader = " "
-vim.keymap.set("n", "-", vim.cmd.Ex)
+--vim.keymap.set("n", "-", vim.cmd.Ex)
+vim.keymap.set('n', '-', '<cmd>Neotree toggle<CR>', { noremap = true, silent = true })
 -- vim.keymap.set("n", "<C-l>", vim.cmd("wincmd l"))
 vim.keymap.set("n", "<C-h>", "<cmd>wincmd h<CR>")
 vim.keymap.set("n", "<C-j>", "<cmd>wincmd j<CR>")
@@ -100,9 +101,8 @@ local mappings = {
     "Buffers",
   },
   -- ["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
-  ["c"] = { "<cmd>Bdelete!<CR>", "Close Buffer" },
-  d = {
-      c = { "<cmd>Copilot disable<cr>", "Disable Copilot" },
+  c = {
+      d = { "<cmd>Copilot disable<cr>", "Disable Copilot" },
       e = { "<cmd>Copilot enable<cr>", "Enable Copilot" },
   },
   ["e"] = { "Harpoon search" },
