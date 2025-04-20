@@ -1,3 +1,7 @@
+vim.diagnostic.config({
+    virtual_text = false
+})
+
 local lsp_zero = require('lsp-zero')
 
 lsp_zero.on_attach(function(client, bufnr)
@@ -17,6 +21,7 @@ require('mason-lspconfig').setup({
     end,
   },
   require('lspconfig').lua_ls.setup{
+
     settings = {
     Lua = {
       runtime = {
@@ -41,5 +46,6 @@ require('mason-lspconfig').setup({
       },
     },
   },
+
   }
 })

@@ -38,7 +38,7 @@ end
 --     { desc = "Open harpoon window" })
 vim.keymap.set("n", "<leader>e", function() toggle_telescope(harpoon:list()) end)
 
-local make_finder = function()
+--[[ local make_finder = function()
   local paths = {}
   for _, item in ipairs(harpoon_files.items) do
     table.insert(paths, item.value)
@@ -75,4 +75,4 @@ require("telescope.pickers").new(
       return true
     end
   }
-):find()
+):find() ]]
