@@ -28,6 +28,8 @@ vim.filetype.add({
   },
 })
 
+vim.o.winborder = "rounded"
+
 -- vim.cmd([[
 -- augroup TransparentBackground
 -- autocmd!
