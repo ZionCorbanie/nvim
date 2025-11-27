@@ -94,41 +94,72 @@ local opts = {
   noremap = true, -- use `noremap` when creating keymaps
   nowait = true, -- use `nowait` when creating keymaps
 }
+
 local mappings = {
-    { "<leader>a", desc = "Add to harpoon", nowait = true, remap = false },
-    { "<leader>b", "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>", desc = "Buffers", nowait = true, remap = false },
-    { "<leader>cd", "<cmd>Copilot disable<cr>", desc = "Disable Copilot", nowait = true, remap = false },
-    { "<leader>ce", "<cmd>Copilot enable<cr>", desc = "Enable Copilot", nowait = true, remap = false },
-    { "<leader>e", desc = "Harpoon search", nowait = true, remap = false },
-    { "<leader>f", group = "Telescope", nowait = true, remap = false },
-    { "<leader>fb", desc = "buffers", nowait = true, remap = false },
-    { "<leader>ff", desc = "Find files", nowait = true, remap = false },
-    { "<leader>fg", desc = "Live grep", nowait = true, remap = false },
-    { "<leader>fh", desc = "Help tags", nowait = true, remap = false },
-    { "<leader>gR", "<cmd>Trouble lsp_references toggle<cr>", desc = "", nowait = true, remap = false },
-    { "<leader>p", group = "Packer", nowait = true, remap = false },
-    { "<leader>pS", "<cmd>PackerStatus<cr>", desc = "Status", nowait = true, remap = false },
-    { "<leader>pc", "<cmd>PackerCompile<cr>", desc = "Compile", nowait = true, remap = false },
-    { "<leader>pi", "<cmd>PackerInstall<cr>", desc = "Install", nowait = true, remap = false },
-    { "<leader>ps", "<cmd>PackerSync<cr>", desc = "Sync", nowait = true, remap = false },
-    { "<leader>pu", "<cmd>PackerUpdate<cr>", desc = "Update", nowait = true, remap = false },
-    { "<leader>s", group = "Search", nowait = true, remap = false },
-    { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands", nowait = true, remap = false },
-    { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages", nowait = true, remap = false },
-    { "<leader>sR", "<cmd>Telescope registers<cr>", desc = "Registers", nowait = true, remap = false },
-    { "<leader>sb", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch", nowait = true, remap = false },
-    { "<leader>sc", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme", nowait = true, remap = false },
-    { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Find Help", nowait = true, remap = false },
-    { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps", nowait = true, remap = false },
-    { "<leader>sr", "<cmd>Telescope oldfiles<cr>", desc = "Open Recent File", nowait = true, remap = false },
-    { "<leader>w", "<C-w>", desc = "Window", nowait = true, remap = false },
-    { "<leader>x", group = "Trouble", nowait = true, remap = false },
-    { "<leader>xd", "<cmd>Trouble document_diagnostics toggle<cr>", desc = "document_diagnostics", nowait = true, remap = false },
-    { "<leader>xl", "<cmd>Trouble loclist toggle<cr>", desc = "loclist", nowait = true, remap = false },
-    { "<leader>xq", "<cmd>Trouble quickfix toggle<cr>", desc = "quickfix", nowait = true, remap = false },
-    { "<leader>xw", "<cmd>Trouble workspace_diagnostics toggle<cr>", desc = "workspace_diagnostics", nowait = true, remap = false },
-    { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "toggle trouble", nowait = true, remap = false },
+    -- Harpoon/Buffers/Copilot/Window (Flat Mappings)
+    ["a"] = { "<cmd>lua require('harpoon.mark').add_file()<cr>", desc = "Add to Harpoon" },
+    ["b"] = { "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>", desc = "Buffers" },
+    ["e"] = { "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", desc = "Harpoon Menu" }, -- Changed from 'Harpoon search' to menu, as 'e' is typically the toggle menu
+    ["w"] = { "<C-w>", desc = "Window" },
+
+    -- Copilot Group: <leader>c
+    ["c"] = {
+        name = "Copilot",
+        ["d"] = { "<cmd>Copilot disable<cr>", desc = "Disable Copilot" },
+        ["e"] = { "<cmd>Copilot enable<cr>", desc = "Enable Copilot" },
+    },
+
+    -- Telescope (Search) Group: <leader>f
+    ["f"] = {
+        name = "Telescope",
+        ["b"] = { "<cmd>lua require('telescope.builtin').buffers()<cr>", desc = "Buffers" }, -- Changed action to prevent duplication with <leader>b
+        ["f"] = { "<cmd>lua require('telescope.builtin').find_files()<cr>", desc = "Find files" },
+        ["g"] = { "<cmd>lua require('telescope.builtin').live_grep()<cr>", desc = "Live grep" },
+        ["h"] = { "<cmd>lua require('telescope.builtin').help_tags()<cr>", desc = "Help tags" },
+    },
+
+    -- Packer Group: <leader>p
+    ["p"] = {
+        name = "Packer",
+        ["c"] = { "<cmd>PackerCompile<cr>", desc = "Compile" },
+        ["i"] = { "<cmd>PackerInstall<cr>", desc = "Install" },
+        ["s"] = { "<cmd>PackerSync<cr>", desc = "Sync" },
+        ["u"] = { "<cmd>PackerUpdate<cr>", desc = "Update" },
+        ["S"] = { "<cmd>PackerStatus<cr>", desc = "Status" },
+    },
+
+    -- Secondary Search Group: <leader>s (Consolidated for clarity)
+    ["s"] = {
+        name = "Search",
+        ["C"] = { "<cmd>Telescope commands<cr>", desc = "Commands" },
+        ["M"] = { "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
+        ["R"] = { "<cmd>Telescope registers<cr>", desc = "Registers" },
+        ["b"] = { "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
+        ["c"] = { "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme" },
+        ["h"] = { "<cmd>Telescope help_tags<cr>", desc = "Find Help" },
+        ["k"] = { "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
+        ["r"] = { "<cmd>Telescope oldfiles<cr>", desc = "Open Recent File" },
+    },
+
+    -- Trouble Group: <leader>x
+    ["x"] = {
+        name = "Trouble",
+        ["d"] = { "<cmd>Trouble document_diagnostics toggle<cr>", desc = "Document diagnostics" },
+        ["l"] = { "<cmd>Trouble loclist toggle<cr>", desc = "Loclist" },
+        ["q"] = { "<cmd>Trouble quickfix toggle<cr>", desc = "Quickfix" },
+        ["w"] = { "<cmd>Trouble workspace_diagnostics toggle<cr>", desc = "Workspace diagnostics" },
+        ["x"] = { "<cmd>Trouble diagnostics toggle<cr>", desc = "Toggle Trouble" }, -- This is now safe
+    },
+
+    -- Git/LSP References (Standalone)
+    ["g"] = {
+        name = "Git/LSP",
+        ["R"] = { "<cmd>Trouble lsp_references toggle<cr>", desc = "LSP References (Trouble)" },
+    },
 }
+
+-- The registration call now uses the simpler format for the nested table
+which_key.register(mappings, opts)
 
 which_key.setup(setup)
 which_key.register(mappings, opts)
