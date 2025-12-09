@@ -14,14 +14,13 @@ require('mason').setup({})
 require('mason-lspconfig').setup({
   -- Replace the language servers listed here
   -- with the ones you want to install
-  ensure_installed = {'tsserver', 'rust_analyzer'},
+  ensure_installed = {},
   handlers = {
     function(server_name)
       require('lspconfig')[server_name].setup({})
     end,
   },
-  require('lspconfig').lua_ls.setup{
-
+  vim.lsp.config("lua_ls", {
     settings = {
     Lua = {
       runtime = {
@@ -46,6 +45,7 @@ require('mason-lspconfig').setup({
       },
     },
   },
+  }),
+  vim.lsp.enable({"lua_ls"})
 
-  }
 })
