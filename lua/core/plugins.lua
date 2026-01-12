@@ -41,9 +41,6 @@ return require('packer').startup(function(use)
         vim.o.timeout = true
         vim.o.timeoutlen = 300
         require("which-key").setup {
-            -- your configuration comes here
-            -- or leave it empty to use the default settings
-            -- refer to the configuration section below
         }
         end
     }
@@ -88,6 +85,16 @@ return require('packer').startup(function(use)
         -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
       }
     })
+    use {
+      "sphamba/smear-cursor.nvim",
+      config = function()
+        require("smear_cursor").setup({
+          stiffness = 0.8,
+          trailing_stiffness = 0.5,
+          distance_stop_animating = 0.5,
+        })
+      end
+    }
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
     if packer_bootstrap then
