@@ -30,6 +30,9 @@ vim.filetype.add({
 
 vim.o.winborder = "rounded"
 
+-- vim.g.loaded_python3_provider = nil
+-- vim.g.python3_host_prog = '/run/current-system/sw/bin/python3'
+
 -- vim.cmd([[
 -- augroup TransparentBackground
 -- autocmd!

@@ -1,104 +1,138 @@
-local ensure_packer = function()
-    local fn = vim.fn
-    local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-    if fn.empty(fn.glob(install_path)) > 0 then
-        fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-        vim.cmd [[packadd packer.nvim]] return true end
-    return false
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
 end
+vim.opt.rtp:prepend(lazypath)
 
-local packer_bootstrap = ensure_packer()
+require("lazy").setup({
+  -- Core & Utilities
+  "nvim-lua/plenary.nvim",
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+  { "nvim-tree/nvim-web-devicons", config = true },
+  { "whonore/Coqtail" },
 
-return require('packer').startup(function(use)
-    -- Packages
-    use 'wbthomason/packer.nvim'
-    use {
-        'nvim-telescope/telescope.nvim', tag = '0.1.6',
-        requires = { {'nvim-lua/plenary.nvim'} }
-    }
-    use { "catppuccin/nvim", as = "catppuccin" }
-    use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate'})
+  -- Treesitter (Updated build setup)
+  {
+    "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    lazy = false,
+    build = ":TSUpdate",
+  
+    config = function()
+      require("nvim-treesitter").setup()
+  
+      require("nvim-treesitter").install({
+        "go",
+        "lua",
+        "vim",
+        "vimdoc",
+        "c",
+        "cpp",
+        "templ",
+        "html",
+      })
+  
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+          "go",
+          "lua",
+          "vim",
+          "vimdoc",
+          "c",
+          "cpp",
+          "templ",
+          "html",
+        },
+        callback = function(args)
+          vim.treesitter.start(args.buf)
+        end,
+      })
+    end,
+  },
 
-    -- Lsp stuff
-    use {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v3.x',
-        requires = {
-            --- Uncomment the two plugins below if you want to manage the language servers from neovim
-            {'williamboman/mason.nvim'},
-            {'williamboman/mason-lspconfig.nvim'},
+  -- Telescope
+  {
+    "nvim-telescope/telescope.nvim",
+    tag = "0.1.6",
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
 
-            {'neovim/nvim-lspconfig'},
-            {'hrsh7th/nvim-cmp'},
-            {'hrsh7th/cmp-nvim-lsp'},
-            {'L3MON4D3/LuaSnip'},
-        }
-    }
+  -- LSP Zero & Mason Setup
+  {
+    "VonHeikemen/lsp-zero.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+      "neovim/nvim-lspconfig",
+      "hrsh7th/nvim-cmp",
+      "hrsh7th/cmp-nvim-lsp",
+      "L3MON4D3/LuaSnip",
+    },
+  },
 
-    use {
-        "folke/which-key.nvim",
-        config = function()
-        vim.o.timeout = true
-        vim.o.timeoutlen = 300
-        require("which-key").setup {
-        }
-        end
-    }
-    use "nvim-lua/plenary.nvim" -- don't forget to add this one if you don't have it yet!
-    use {
-        "ThePrimeagen/harpoon",
-        branch = "harpoon2",
-        requires = { {"nvim-lua/plenary.nvim"} }
-    }
-    use {
-        'numToStr/Comment.nvim',
-        config = function()
-            require('Comment').setup()
-        end
-    }
-    use { 'm4xshen/autoclose.nvim' }
-    use { "lukas-reineke/indent-blankline.nvim" }
-    use "quarto-dev/quarto-nvim"
-    use 'jmbuhr/otter.nvim'
-    use {
-        'nvim-tree/nvim-web-devicons',
-        config = function()
-            require("nvim-web-devicons").setup {
-            }
-        end
+  -- Navigation & Workflow
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+    end,
+    config = function()
+      require("which-key").setup({})
+    end,
+  },
+  {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
+  {
+    "numToStr/Comment.nvim",
+    config = function()
+      require("Comment").setup()
+    end,
+  },
+  { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
+  { "quarto-dev/quarto-nvim" },
+  { "jmbuhr/otter.nvim" },
+  {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {},
+  },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+    },
+  },
 
-    }
-    use {
-      "folke/trouble.nvim",
-      requires = "nvim-tree/nvim-web-devicons",
-      config = function()
-        require("trouble").setup {}
-      end
-    }
-    use({
-      "nvim-neo-tree/neo-tree.nvim",
-      branch = "v3.x",
-      requires = {
-        "nvim-lua/plenary.nvim",
-        "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-        "MunifTanjim/nui.nvim",
-        -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
-      }
-    })
-    use {
-      "sphamba/smear-cursor.nvim",
-      config = function()
-        require("smear_cursor").setup({
-          stiffness = 0.8,
-          trailing_stiffness = 0.5,
-          distance_stop_animating = 0.5,
-        })
-      end
-    }
-    -- Automatically set up your configuration after cloning packer.nvim
-    -- Put this at the end after all plugins
-    if packer_bootstrap then
-        require('packer').sync()
-    end
-end)
-
+  -- Aesthetics & Tools
+  {
+    "sphamba/smear-cursor.nvim",
+    opts = {
+      stiffness = 1,
+      trailing_stiffness = 1,
+      distance_stop_animating = 0.8,
+    },
+  },
+  {
+    "chomosuke/typst-preview.nvim",
+    lazy = false,
+    version = "1.*",
+    opts = {},
+  },
+})

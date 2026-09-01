@@ -1,51 +1,59 @@
 vim.diagnostic.config({
-    virtual_text = false
+  virtual_text = false,
 })
 
 local lsp_zero = require('lsp-zero')
 
 lsp_zero.on_attach(function(client, bufnr)
-  -- see :help lsp-zero-keybindings
-  -- to learn the available actions
-  lsp_zero.default_keymaps({buffer = bufnr})
+  lsp_zero.default_keymaps({ buffer = bufnr })
 end)
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  -- Replace the language servers listed here
-  -- with the ones you want to install
-  ensure_installed = {},
+  ensure_installed = { 'gopls', 'lua_ls' }, -- Explicitly include Go LSP
   handlers = {
+    -- Default handler for automatically installed servers
     function(server_name)
       require('lspconfig')[server_name].setup({})
     end,
-  },
-  vim.lsp.config("lua_ls", {
-    settings = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using
-        -- (most likely LuaJIT in the case of Neovim)
-        version = 'LuaJIT',
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = {
-          'vim',
-          'require'
-        },
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file("", true),
-      },
-      -- Do not send telemetry data containing a randomized but unique identifier
-      telemetry = {
-        enable = false,
-      },
-    },
-  },
-  }),
-  vim.lsp.enable({"lua_ls"})
 
+    -- Custom Clangd Configuration
+    ['clangd'] = function()
+      require('lspconfig').clangd.setup({
+        cmd = {
+          "clangd",
+          "--background-index",
+          "--clang-tidy",
+          "--query-driver=" .. os.getenv("HOME") .. "/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-*"
+        },
+      })
+    end,
+
+    -- Custom Lua LSP Configuration
+    ['lua_ls'] = function()
+      require('lspconfig').lua_ls.setup({
+        settings = {
+          Lua = {
+            runtime = { version = 'LuaJIT' },
+            diagnostics = { globals = { 'vim' } },
+            workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+            telemetry = { enable = false },
+          },
+        },
+      })
+    end,
+  },
 })
+
+vim.api.nvim_create_user_command("LspRestart", function()
+  local clients = vim.lsp.get_clients({ bufnr = 0 })
+
+  for _, client in ipairs(clients) do
+    vim.lsp.stop_client(client.id)
+  end
+
+  vim.defer_fn(function()
+    vim.cmd("edit")
+  end, 100)
+end, {})
+
