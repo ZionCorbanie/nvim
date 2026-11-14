@@ -124,9 +124,9 @@ require("lazy").setup({
   {
     "sphamba/smear-cursor.nvim",
     opts = {
-      stiffness = 1,
-      trailing_stiffness = 1,
-      distance_stop_animating = 0.8,
+      stiffness = 0.4,
+      trailing_stiffness = 0.7,
+      distance_stop_animating = 1,
     },
   },
   {
@@ -135,4 +135,6 @@ require("lazy").setup({
     version = "1.*",
     opts = {},
   },
+  { "nvim-treesitter/nvim-treesitter-context" },
+  { "lewis6991/gitsigns.nvim"},
 })

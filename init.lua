@@ -1,3 +1,1 @@
-require("core/plugins")
-require("core/mappings")
-require("core/main")
+/nix/store/in9ivwgpdikf127m1by8h3a3559q8dzs-home-manager-files/.config/nvim/init.lua

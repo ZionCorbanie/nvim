@@ -29,6 +29,7 @@ require('mason-lspconfig').setup({
       })
     end,
 
+
     -- Custom Lua LSP Configuration
     ['lua_ls'] = function()
       require('lspconfig').lua_ls.setup({
@@ -44,6 +45,10 @@ require('mason-lspconfig').setup({
     end,
   },
 })
+
+if vim.fn.executable("coq-lsp") == 1 then
+  require('lspconfig').coq_lsp.setup({})
+end
 
 vim.api.nvim_create_user_command("LspRestart", function()
   local clients = vim.lsp.get_clients({ bufnr = 0 })
